@@ -7,12 +7,14 @@
     <version>1.0.0</version>
     <url>http://maven.apache.org</url>
     <properties>
+        <java.version>1.8</java.version>
         <swagger-annotations-version>1.5.8</swagger-annotations-version>
         <jersey-version>2.22.2</jersey-version>
         <jackson-version>2.8.9</jackson-version>
         <jodatime-version>2.7</jodatime-version>
         <maven-plugin-version>1.0.0</maven-plugin-version>
         <junit-version>4.8.1</junit-version>
+        <feign.version>9.4.0</feign.version>
     </properties>
 
     <dependencies>
@@ -29,20 +31,26 @@
 
         <!-- HTTP client: jersey-client -->
         <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>${jersey-version}</version>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+            <version>${feign.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>${jersey-version}</version>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-jackson</artifactId>
+            <version>${feign.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-multipart</artifactId>
-            <version>${jersey-version}</version>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-slf4j</artifactId>
+            <version>${feign.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.openfeign.form</groupId>
+            <artifactId>feign-form</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
 
         <!-- JSON processing: jackson -->
         <dependency>
@@ -102,6 +110,11 @@
             <version>1.5.16</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.oltu.oauth2</groupId>
+            <artifactId>org.apache.oltu.oauth2.client</artifactId>
+            <version>0.31</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,6 +136,7 @@
                             <!-- target to generate java client code -->
                             <language>java</language>
                             <generateApis>true</generateApis>
+                            <generateApiTests>false</generateApiTests>
                             <!-- hint: if you want to generate java server code, e.g. based on Spring Boot,
                                  you can use the following target: <language>spring</language> -->
 
@@ -132,10 +146,19 @@
                             </configOptions>
 
                             <!-- override the default library to jersey2 -->
-                            <library>jersey2</library>
+                            <library>feign</library>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
